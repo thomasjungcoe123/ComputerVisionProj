@@ -1,0 +1,41 @@
+% run this script
+
+imnames={'IMAG4688.jpg','IMAG4689.jpg'};
+
+I1=preprocess_image(imread(imnames{1}));
+I2=preprocess_image(imread(imnames{2}));
+
+
+%% Todo
+% find match coordinates from I1 to I2
+
+load hw5.mat % you should comment this line, this load my pre-matched pair list and transform
+% check out xy1,xy2 and xx_sam
+%% Don't need to change here
+% visualize your points
+figure; 
+subplot(2,1,1)
+
+xx=affine_fit(xy1,xy2); % note that xy1 and xy2 are in homogenous coordinates, each column is one point
+% check out the predefined example in hw5.mat
+
+[wholeImg,NewImage,offsets]=draw_align_image(xx,I1,I2);
+pause(0.5); % matlab bug with hold on
+hold on;
+show_points_on_drawn_image(offsets,xx,xy1,xy2); % this line is for debugging, you can comment it if you want
+title('Affine transform without ransac');
+xlabel('Red cross are points in the second image; blue circle are transformed points on the first image');
+
+%% extra credit, try to implement ransac to get a better fitting (50%)
+
+%% extra credit, try to implement projective transform fitting to get nicer transform (50%)
+
+%% If you implement both extra credit, your transform should be pretty nice as below
+
+xx=xx_sam
+[wholeImg,NewImage,offsets]=draw_align_image(xx,I1,I2);
+pause(0.5);
+hold on;
+show_points_on_drawn_image(offsets,xx,xy1,xy2); % this line is for debugging, you can comment it if you want
+title('Projective transform fitting + ransac');
+xlabel('Red cross are points in the second image; blue circle are transformed points on the first image');
